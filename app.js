@@ -23,6 +23,12 @@ app.get('/recuperar', recuperar);
 var eliminar = require('./controllers/eliminar.js');
 app.get('/eliminar/:id', eliminar);
 
+var obtener = require('./controllers/obtener.js');
+app.get('/obtener/:id', obtener);
+
+var editar = require('./controllers/editar.js');
+app.post('/editar/:id', editar);
+
 var server = app.listen(2024, function () {
    var host = server.address().address
    var port = server.address().port
