@@ -4,7 +4,8 @@ const crypto = require('crypto');
 
 module.exports = {
     enviar: enviar,
-	recuperar: recuperar
+	recuperar: recuperar,
+	eliminar: eliminar
 }
 
 function enviar(asunto, mensaje){
@@ -12,9 +13,6 @@ function enviar(asunto, mensaje){
 		const stmt = db.prepare("INSERT INTO mensaje VALUES (?, ?,?)");
 		stmt.run(crypto.randomUUID(), asunto, mensaje);
 		stmt.finalize();
-		db.each("SELECT id, asunto, mensaje FROM mensaje", (err, row) => {
-			console.log(row.id, row.asunto + " ------ " + row.mensaje);
-		});
 	});
 }
 
@@ -25,5 +23,13 @@ function recuperar(callback){
             mensajes.push({"id": row.id, "asunto": row.asunto, "mensaje": row.mensaje});
         });
 		return callback(false, mensajes.reverse());
+	});
+}
+
+function eliminar(id){
+    db.serialize(() => {
+		const stmt = db.prepare("DELETE FROM mensaje WHERE id = ?");
+		stmt.run(id);
+		stmt.finalize();
 	});
 }

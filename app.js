@@ -20,6 +20,9 @@ app.post('/enviar', enviar);
 var recuperar = require('./controllers/recuperar.js');
 app.get('/recuperar', recuperar);
 
+var eliminar = require('./controllers/eliminar.js');
+app.get('/eliminar/:id', eliminar);
+
 var server = app.listen(2024, function () {
    var host = server.address().address
    var port = server.address().port
