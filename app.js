@@ -7,6 +7,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('./mensajes.db');
+db.serialize(() => {
+    db.run("CREATE TABLE IF NOT EXISTS mensaje (id TEXT, asunto TEXT, mensaje TEXT);");
+});
+db.close();
+
 var enviar = require('./controllers/enviar.js');
 app.post('/enviar', enviar);
 
