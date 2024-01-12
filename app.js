@@ -17,6 +17,9 @@ db.close();
 var enviar = require('./controllers/enviar.js');
 app.post('/enviar', enviar);
 
+var recuperar = require('./controllers/recuperar.js');
+app.get('/recuperar', recuperar);
+
 var server = app.listen(2024, function () {
    var host = server.address().address
    var port = server.address().port

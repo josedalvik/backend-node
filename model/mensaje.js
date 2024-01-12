@@ -3,7 +3,8 @@ const db = new sqlite3.Database('./mensajes.db');
 const crypto = require('crypto');
 
 module.exports = {
-    enviar: enviar
+    enviar: enviar,
+	recuperar: recuperar
 }
 
 function enviar(asunto, mensaje){
@@ -14,5 +15,15 @@ function enviar(asunto, mensaje){
 		db.each("SELECT id, asunto, mensaje FROM mensaje", (err, row) => {
 			console.log(row.id, row.asunto + " ------ " + row.mensaje);
 		});
+	});
+}
+
+function recuperar(callback){
+	let mensajes = [];
+	db.all("SELECT id, asunto, mensaje FROM mensaje", (err, rows) => {
+		rows.forEach((row)=>{
+            mensajes.push({"id": row.id, "asunto": row.asunto, "mensaje": row.mensaje});
+        });
+		return callback(false, mensajes.reverse());
 	});
 }
